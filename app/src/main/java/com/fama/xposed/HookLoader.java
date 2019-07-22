@@ -1,4 +1,4 @@
-package com.example.xposedhook;
+package com.fama.xposed;
 
 import android.app.Application;
 import android.content.Context;
@@ -11,7 +11,6 @@ import dalvik.system.PathClassLoader;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -41,7 +40,7 @@ public class HookLoader implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
     private final String initMethod = "initZygote";
 
-    private IXposedHookZygoteInit.StartupParam startupparam;
+    private StartupParam startupparam;
 
     /**
      * 重定向handleLoadPackage函数前会执行initZygote
@@ -80,7 +79,7 @@ public class HookLoader implements IXposedHookLoadPackage, IXposedHookZygoteInit
      * @param startupParam
      */
     @Override
-    public void initZygote(IXposedHookZygoteInit.StartupParam startupParam) {
+    public void initZygote(StartupParam startupParam) {
         this.startupparam = startupParam;
     }
 

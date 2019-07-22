@@ -1,4 +1,4 @@
-package com.example.xposedhook;
+package com.fama.xposed;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -17,25 +17,27 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  */
 
 public class HookLogic implements IXposedHookLoadPackage, IXposedHookZygoteInit {
+
     private final static String modulePackageName = HookLogic.class.getPackage().getName();
     private XSharedPreferences sharedPreferences;
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
-        if ("xxx.xxx.xxx".equals(loadPackageParam.packageName)){
-            XposedHelpers.findAndHookMethod("xxx.xxx.xxx.xxxClass", loadPackageParam.classLoader, "xxxMethod", new XC_MethodHook() {
+        if ("com.wonder.demo".equals(loadPackageParam.packageName)) {
+            XposedHelpers.findAndHookMethod("com.wonder.demo.MainActivity", loadPackageParam.classLoader, "toastMessage", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    param.setResult("Hook succeed");
-                    int x=sharedPreferences.getInt("example",1);
+                    XposedBridge.log(param.getResult().toString());
+                    param.setResult("啦啦啦啦");
+                    int x = sharedPreferences.getInt("example", 1);
                 }
             });
         }
     }
 
     @Override
-    public void initZygote(IXposedHookZygoteInit.StartupParam startupParam) {
+    public void initZygote(StartupParam startupParam) {
         this.sharedPreferences = new XSharedPreferences(modulePackageName, "default");
-        XposedBridge.log(modulePackageName+" initZygote");
+        XposedBridge.log(modulePackageName + " initZygote");
     }
 }
